@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Soham — SOC Portfolio</title>
+  <meta name="description" content="Soham's SOC learning portfolio: logs, SIEM, detection, incident response." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Base reset */
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%;width:100%;margin:0;overflow-x:hidden}
+
+    :root{
+      --bg:#071027;
+      --panel:#0e1724;
+      --muted:#9fb0c8;
+      --accent:#6a82fb;
+      --accent-2:#00d4ff;
+      --glass:rgba(255,255,255,0.03);
+      --radius:14px;
+      --max-width:1100px;
+      font-family: 'Poppins', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color-scheme:dark;
+    }
+
+    body{
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(106,130,251,0.12), transparent 12%),
+                  linear-gradient(180deg,var(--bg) 0%, #041424 100%);
+      color:#e6f4ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding-bottom:60px;
+    }
+
+    a{color:var(--accent);text-decoration:none}
+
+    /* Header */
+    header{position:sticky;top:0;z-index:40;background:linear-gradient(180deg, rgba(3,10,20,0.6), rgba(3,10,20,0.35));backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.03)}
+    .nav{max-width:var(--max-width);margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
+    .logo{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#021025}
+    .brand h1{font-size:16px;margin:0}
+    .brand p{margin:0;font-size:12px;color:var(--muted)}
+
+    nav ul{display:flex;gap:14px;align-items:center;list-style:none;margin:0;padding:0}
+    nav li{font-size:14px}
+    .nav-actions{display:flex;gap:10px;align-items:center}
+    .btn{border-radius:10px;padding:8px 12px;font-weight:600;border:0;cursor:pointer}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#031227}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+
+    /* Layout */
+    .container{max-width:var(--max-width);margin:28px auto;padding:0 20px}
+    .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.03);box-shadow:0 8px 30px rgba(2,8,20,0.6)}
+
+    /* Hero */
+    .hero{padding:22px}
+    .hero h2{font-size:26px;margin:0;line-height:1.05}
+    .hero p{color:var(--muted);margin-top:10px;font-size:15px}
+
+    .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .chip{background:rgba(255,255,255,0.02);padding:7px 10px;border-radius:999px;font-size:13px;color:var(--muted);border:1px solid rgba(255,255,255,0.02)}
+
+    /* Post list */
+    .posts{display:flex;flex-direction:column;gap:14px;margin-top:18px}
+    .post{display:block}
+    .post .title{font-weight:600;font-size:18px;margin-bottom:6px}
+    .post .meta{font-size:13px;color:var(--muted)}
+    .post .excerpt{color:var(--muted);margin-top:10px}
+
+    .post-content{margin-top:12px;color:#e6f4ff;line-height:1.6}
+    pre{background:#021425;padding:12px;border-radius:10px;overflow-x:auto;border:1px solid rgba(255,255,255,0.03)}
+    code{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;font-size:13px}
+
+    /* Sidebar */
+    aside .avatar{width:84px;height:84px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#021025}
+    .aside-list{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+    .aside h4{margin:0 0 6px 0}
+
+    /* Footer */
+    footer{max-width:var(--max-width);margin:28px auto;padding:12px 20px;color:var(--muted);text-align:center}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .layout{grid-template-columns:1fr}
+      aside{order:2}
+    }
+    @media (max-width:520px){
+      .nav{padding:12px}
+      nav ul{display:none}
+      .mobile-menu-toggle{display:inline-flex}
+      .hero h2{font-size:20px}
+    }
+
+    /* Utility */
+    .muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <div class="logo">SD</div>
+        <div>
+          <h1>Soham Dhamale</h1>
+          <p>Learning SOC • Logs • SIEM • IR</p>
+        </div>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#blog">Blog</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn btn-ghost" id="themeBtn">Theme</button>
+        <button class="btn btn-primary" onclick="document.getElementById('blog').scrollIntoView({behavior:'smooth'})">Read post</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="layout">
+
+      <section>
+        <div class="card hero">
+          <h2>Modern SOC learning — Hands-on notes & playbook</h2>
+          <p>I'm Soham. I collect logs, build detections and practice incident response in my home lab. This site doubles as my portfolio and a learning journal. First article below: introduction to log analysis.</p>
+
+          <div class="chips">
+            <span class="chip">Logs</span>
+            <span class="chip">SIEM</span>
+            <span class="chip">Detection</span>
+            <span class="chip">Incident Response</span>
+          </div>
+
+          <div class="posts">
+            <article class="post card" id="blog-post-1">
+              <div class="title">Introduction to Log Analysis — Foundation of SOC</div>
+              <div class="meta">Dec 10, 2025 • Category: Logs • Reading: 6 min</div>
+
+              <div class="post-content">
+                <p><strong>Why logs matter</strong><br>Logs are the primary evidence for security investigations. They capture what happened, where and who performed actions. Good log coverage + reliable timestamps = faster triage and more accurate detections.</p>
+
+                <h4>Common log sources</h4>
+                <ul>
+                  <li><strong>Windows:</strong> Event Logs — Security, System, Application</li>
+                  <li><strong>Linux:</strong> syslog, auth.log, journalctl</li>
+                  <li><strong>Network:</strong> Firewalls, routers — connection and drop logs</li>
+                  <li><strong>Cloud:</strong> CloudTrail, CloudWatch, Azure Activity Logs</li>
+                </ul>
+
+                <h4>Quick commands</h4>
+                <pre><code>sudo journalctl -u ssh -p err --since "1 hour ago"
+# grep failed logins
+sudo grep -i "failed password" /var/log/auth.log | tail -n 50
+
+# Windows PowerShell: recent security events
+Get-WinEvent -FilterHashtable @{LogName='Security'; StartTime=(Get-Date).AddHours(-6)} |
+  Select TimeCreated, Id, LevelDisplayName | Format-Table -AutoSize</code></pre>
+
+                <h4>Beginner tips</h4>
+                <ol>
+                  <li>Centralize logs to a SIEM or ELK stack.</li>
+                  <li>Normalize fields so queries work across sources.</li>
+                  <li>Ensure clocks are synchronized (NTP).</li>
+                  <li>Tune alerts to avoid noise and false positives.</li>
+                </ol>
+
+                <p class="muted">I practice in my lab (Windows + Ubuntu + pfSense) and ingest logs into Elastic and Splunk. I'll share dashboards and detections here soon.</p>
+              </div>
+
+              <div style="display:flex;gap:10px;margin-top:12px;align-items:center">
+                <button class="btn btn-primary" onclick="openFullPost()">Open full post</button>
+                <span class="muted">Share: <a href="#">Twitter</a> • <a href="#">LinkedIn</a></span>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <section id="about" style="margin-top:18px">
+          <div class="card">
+            <h3>About</h3>
+            <p class="muted">Soham is an aspiring SOC analyst building practical skills in log collection, detection engineering and incident response using a hands-on home lab and CTFs.</p>
+          </div>
+        </section>
+
+      </section>
+
+      <aside>
+        <div class="card">
+          <div style="display:flex;gap:12px;align-items:center">
+            <div class="avatar">SD</div>
+            <div>
+              <div style="font-weight:700">Soham Dhamale</div>
+              <div class="muted" style="font-size:13px">SOC Student • Logs • SIEM</div>
+            </div>
+          </div>
+
+          <div class="aside-list">
+            <div>
+              <h4>Contact</h4>
+              <div class="muted">Email: <a href="mailto:soham@example.com">sohamdhamale.30@gmail.com</a></div>
+            </div>
+
+            <div>
+              <h4>Learning plan</h4>
+              <div class="muted">Logs → SIEM → Hunting → IR</div>
+            </div>
+
+            <div>
+              <h4>Tools</h4>
+              <div class="muted">Splunk (trial) • Elastic • Wireshark • Sysinternals</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:16px"></div>
+
+        <div class="card">
+          <h4>Quick Lab Ideas</h4>
+          <ul class="muted">
+            <li>Centralize Windows & Linux logs to Elastic/Splunk</li>
+            <li>Create dashboard for failed logins</li>
+            <li>Detect suspicious process creation</li>
+          </ul>
+        </div>
+      </aside>
+
+    </div>
+
+    <section id="projects" style="margin-top:22px">
+      <div class="card">
+        <h3>Projects & Labs</h3>
+        <p class="muted">Links to hands-on write-ups and dashboards will appear here.</p>
+      </div>
+    </section>
+
+    <section id="contact" style="margin-top:18px">
+      <div class="card">
+        <h3>Contact</h3>
+        <p class="muted">Want to mentor or collaborate? Send a message below.<br>Contact no- +91 7499661102<br><a href="https://www.linkedin.com/in/soham-dhamale-a14b631b1/" target="_blank">LinkedIn</a> <br></p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Built with ❤️ by Soham • Last updated: Dec 10, 2025
+  </footer>
+
+  <script>
+    // small interactive helpers — lightweight and safe
+    function openFullPost(){
+      // For now show a modal-like alert. Expand to full post view later.
+      alert('Full post view coming soon — this is a demo site.');
+    }
+
+    // Theme toggle: simple invert of accent colors for demo
+    document.getElementById('themeBtn').addEventListener('click', ()=>{
+      document.documentElement.classList.toggle('alt-theme');
+      if(document.documentElement.classList.contains('alt-theme')){
+        document.documentElement.style.setProperty('--accent','#00f2c3');
+        document.documentElement.style.setProperty('--accent-2','#7c5cff');
+      } else {
+        document.documentElement.style.setProperty('--accent','#6a82fb');
+        document.documentElement.style.setProperty('--accent-2','#00d4ff');
+      }
+    });
+
+    // Prevent horizontal overflow from images or long tokens
+    window.addEventListener('load', ()=>{
+      const elems = document.querySelectorAll('pre, code, img');
+      elems.forEach(e=> e.style.maxWidth = '100%');
+    });
+  </script>
+</body>
+</html>
